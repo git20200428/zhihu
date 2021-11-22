@@ -116,8 +116,32 @@ app.get('/news_before',(req, res)=>{
     res.send({date,stories});
 })
 
+app.get('/news_info',(req,res)=>{
+    res.send({
+        body:"知乎,中文互联网高质量的问答社区和创作者聚集的原创内容平台,于 2011 年 1 月正式上线,以「让人们更好地分享知识、经验和见解,找到自己的解答」为品牌使命。知乎凭借认真、专业、友善的社区氛围...",
+        title:"斑马"
+    });
+})
+app.get('/story_extra',(req,res)=>{
+    res.send({
+        long_comments:1,
+        popularity:183,
+        short_comments:22,
+        comments:23
+    });
+})
 
+app.post('/api/login',()=>{
 
+})
+
+app.post('/api/phone_code',()=>{
+
+})
+
+app.post('/api/check_login',()=>{
+
+})
 
 app.listen(7000, err=>{
     if(!err) {
