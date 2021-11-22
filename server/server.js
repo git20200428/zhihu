@@ -121,7 +121,7 @@ app.get('/news_before',(req, res)=>{
 
 app.listen(7000, err=>{
     if(!err) {
-        console.log("服务器启动了")
+        console.log("server started on 7000")
     }else{
         console.log(err);
     }

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import {isPlainObject} from '@assets/utils';
+import {isPlainObject} from '@/assets/utils';
 import {Notify} from 'vant'
 
 axios.defaults.baseURL = '';

@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import Vant from 'vant'
+import Vant,{Lazyload} from 'vant'
 import 'vant/lib/index.css'
 import "amfe-flexible"
 import store from "./store/index"
@@ -12,6 +12,9 @@ window.addEventListener('resize',handleMaxWidth);
 
 const app = createApp(App);
 app.use(Vant);
+app.use(Lazyload,{
+    lazyComponent: true
+});
 app.use(store);
 app.use(router);
 app.mount('#app')
