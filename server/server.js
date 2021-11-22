@@ -131,16 +131,20 @@ app.get('/story_extra',(req,res)=>{
     });
 })
 
-app.post('/api/login',()=>{
+app.post('/login',(_,res)=>{
 
+    res.send({code:0,token:'ljaourewn@fljl#'});
 })
 
-app.post('/api/phone_code',()=>{
-
+app.post('/phone_code',(_,res)=>{
+    res.send({code:0});
 })
 
-app.post('/api/check_login',()=>{
-
+app.get('/check_login',(_,res)=>{
+    res.send({code:0})
+})
+app.get('/user_info',(_,res)=>{
+    res.send({code:0,data:{id:1,name:"知乎用户6441871",phone:"18317001868",pic:"/imgs/user/pic.png"}})
 })
 
 app.listen(7000, err=>{
