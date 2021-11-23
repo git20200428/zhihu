@@ -141,11 +141,32 @@ app.post('/phone_code',(_,res)=>{
 })
 
 app.get('/check_login',(_,res)=>{
-    res.send({code:0})
+    res.send({code:0,data:{id:1,name:"知乎用户6441871",phone:"18317001868",pic:"/imgs/user/apple.jpg"}})
 })
 app.get('/user_info',(_,res)=>{
-    res.send({code:0,data:{id:1,name:"知乎用户6441871",phone:"18317001868",pic:"/imgs/user/pic.png"}})
+    res.send({code:0,data:{id:1,name:"知乎用户6441871",phone:"18317001868",pic:"/imgs/user/apple.jpg"}})
 })
+
+
+
+app.get('/store_list',(_,res)=>{
+    res.send({
+        code:0,
+        codeText:"store_list 成功",
+        data : [{
+          image_hue: "0xb09b7b",
+          title: "以藤原豆腐店的收入，是否能够支付藤原在赛车上的投入？",
+          url: "https://daily.zhihu.com/story/9741729",
+          hint: "Astro . 2 分钟前阅读",
+          gp_prefix: "102907",
+          images:["https://pica.zhimg.com/v2-91978c94dd4064d0c687be6ef17301d4.jpg?source=8673f162",],
+          type:0,
+          id:9741729
+        }]
+    })
+})
+
+
 
 app.listen(7000, err=>{
     if(!err) {

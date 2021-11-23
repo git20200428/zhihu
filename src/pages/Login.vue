@@ -27,20 +27,21 @@ import {reactive, ref, toRefs} from "vue";
 import api from "@/api/index"
 import {Toast} from "vant"
 import {useStore} from "vuex"
-import {useRouter} from "vue-router"
+import {useRouter, useRoute} from "vue-router"
 export default {
 name: "Login",
   components: {Nav},
   setup() {
     const store = useStore(),
-          router = useRouter();
-    const state = reactive({
+          router = useRouter(),
+          route = useRoute();
+    let state = reactive({
       phone: "",
       code: "",
       enable: true,
       time: "15s"
     });
-    const formBox = ref(null);
+    let formBox = ref(null);
 
     const sendCode = async () => {
       try {
@@ -77,9 +78,17 @@ name: "Login",
       }
       localStorage.setItem('token',token);
       store.commit("changeIsLogin",true);
-      await store.dispatch("changeInfoAsync");
-      Toast("小主，欢迎回来");
-      router.back();
+      store.dispatch("changeInfoAsync");
+      store.commit("changeStoreList",null);
+      Toast("小主真棒，当前登录成功");
+      //跳转到指定地址
+      let from = route.query.from;
+      console.log(from)
+      if(from){
+        router.replace(`/${from}`);
+        return;
+      }
+      router.replace('/person');
     }
     return{
       ...toRefs(state),

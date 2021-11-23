@@ -8,7 +8,7 @@
       <van-icon name="arrow-left" @click="handle"></van-icon>
       <van-icon name="comment-o" :badge="comments"></van-icon>
       <van-icon name="good-job-o" :badge="popularity"></van-icon>
-      <van-icon name="star-o" color="#1989fa"></van-icon>
+      <van-icon name="star-o" :color="isStore ? '#1989fa' : '#000'" @click="storeHandle"></van-icon>
       <van-icon name="share-o"></van-icon>
   </div>
 </template>
@@ -17,18 +17,53 @@
   import {useRouter,useRoute}  from "vue-router"
   import {reactive,toRefs,onBeforeMount,onBeforeUnmount} from "vue"
   import api from "@/api/index"
+  import {useStore} from "vuex"
+  import {computed} from "vue"
+  import {Toast} from "vant"
   export default {
     name: "Detail",
     setup(){
       const router = useRouter(),
-          route = useRoute();
+          route = useRoute(),
+          store = useStore();
+
       const handle = ()=>{
         router.back();
+      }
+      const storeHandle = async ()=>{
+        if(!store.state.isLogin){
+          Toast("小主，请先登录");
+          // router.push(`/login?from=detail/${reoute.params.id}`)
+          router.push({
+            path: "/login",
+            query: {
+              from:`detail/${route.params.id}`
+            }
+          });
+          return;
+        }
+        if(isStore.value) return;
+        let {code} = await api.store(route.params.id);
+        if(+code !== 0){
+          Toast("小主，很遗憾收藏失败");
+        }
+        Toast("小主，收藏成功");
+        store.dispatch('changeStoreListAsync');
       }
       let state = reactive({
         comments:0,
         popularity:0,
         newsInfo:null
+      });
+      let isStore = computed(()=>{
+        let {isLogin, storeList} = store.state;
+        if(isLogin){
+          if(!Array.isArray(storeList)) storeList=[];
+          return storeList.some( item => {
+            return +item.news.id === + route.params.id;
+          })
+        }
+        return false;
       });
 
       onBeforeMount(async ()=>{
@@ -51,10 +86,22 @@
         // if(!link) return;
         // document.head.removeChild(link);
       });
+      onBeforeUnmount(async ()=>{
+        if(store.state.isLogin === null)
+          await store.dispatch("changeIsLoginAsync");
+        if(store.state.isLogin){
+          console.log(store.state.isLogin)
+          if(store.state.info === null)  store.dispatch("changeInfoAsync");
+          if(store.state.storeList === null)  store.dispatch("changeStoreListAsync");
+        }
+
+      })
 
       return {
         ...toRefs(state),
-        handle
+        isStore,
+        handle,
+        storeHandle
       }
     }
   }

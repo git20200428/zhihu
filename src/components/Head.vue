@@ -14,9 +14,10 @@
 </template>
 
 <script>
-import {reactive, toRefs, computed} from "vue";
+import { computed,onBeforeMount} from "vue";
 import timg from "@/assets/images/timg.png";
 import {formatTime} from "@/assets/utils";
+import {useStore} from "vuex"
 
 export default {
   name: "Head",
@@ -35,16 +36,30 @@ export default {
         day
       };
     });
-    let state = reactive({
-      //vue工程化动态绑定的图片不能用相对地址,写"../assets/images/timg.png"会导致图片找不到
-      //pic: require("../assets/images/timg.png"), commonJS规范引入图片，有效
-      //import timg from "../assets/images/timg.png"; pic: timg; import语法引入图片，有效
-      pic: timg,
+    let pic = computed(()=>{
+      let {isLogin, info} = store.state;
+      if(isLogin){
+        console.log(info)
+        return info.pic || timg;
+      }
+      return timg;
+    });
+    // let state = reactive({
+    //   //vue工程化动态绑定的图片不能用相对地址,写"../assets/images/timg.png"会导致图片找不到
+    //   //pic: require("../assets/images/timg.png"), commonJS规范引入图片，有效
+    //   //import timg from "../assets/images/timg.png"; pic: timg; import语法引入图片，有效
+    //   pic: timg,
+    // });
+    const store = useStore();
+    onBeforeMount(()=>{
+      let {isLogin, info} = store.state;
+      if(isLogin === null) store.dispatch("changeIsLoginAsync");
+      if(info === null) store.dispatch("changeInfoAsync");
     });
 
     return {
-      ...toRefs(state),
-      timeNow
+      // ...toRefs(state),
+      timeNow,pic
     }
   }
 }

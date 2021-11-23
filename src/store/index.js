@@ -5,7 +5,8 @@ const evn = process.env.NODE_ENV;
 export default createStore({
    state:{
        isLogin:null,
-       info:null
+       info:null,
+       storeList:null
    } ,
     mutations:{
         changeIsLogin(state,bool){
@@ -13,6 +14,15 @@ export default createStore({
         },
         changeInfo(state,payload){
             state.info = payload;
+        },
+        changeStoreList(state, payload){
+            state.storeList = payload;
+        },
+        removeStoreList(state,id){
+            if(state.storeList === null) return;
+            state.storeList = state.storeList.filter(item => {
+                return +item.id != +id;
+            });
         }
     },
     actions:{
@@ -27,6 +37,11 @@ export default createStore({
             if(+code===0){
                 commit('changeInfo',data);
             }
+        },
+        async changeStoreListAsync({commit}){
+            let {code, data} = await  api.storeList();
+            if(+code !== 0) data = [];
+            commit("changeStoreList",data);
         }
     },
     plugins: evn ==='production' ? [] : [createLogger()]
