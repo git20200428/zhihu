@@ -4,7 +4,7 @@
     <!--    lazy-render轮播图图片懒加载-->
     <van-swipe v-if="bannerList.length > 0" autoplay="3000" lazy-render>
       <van-swipe-item v-for="item in bannerList" :key="item.id">
-        <router-link to="`/detail/${item.id}`" class="content">
+        <router-link :to="`/detail/${item.id}`"  class="content">
           <img :src="item.image" alt="">
           <div class="mark">
             <h3 class="title">{{item.title}}</h3>

@@ -1,8 +1,6 @@
 <template>
   <van-skeleton row="5" v-if="newsInfo===null"></van-skeleton>
-<!--  <div class="content" v-else v-html="newsInfo.body">-->
-  <div class="content" v-else >
-    {{newsInfo.body}}
+  <div class="content" v-else v-html="newsInfo.body">
   </div>
   <div class="nav-box">
       <van-icon name="arrow-left" @click="handle"></van-icon>
@@ -15,7 +13,7 @@
 
 <script>
   import {useRouter,useRoute}  from "vue-router"
-  import {reactive,toRefs,onBeforeMount,onBeforeUnmount} from "vue"
+  import {reactive,toRefs,onBeforeMount,onBeforeUnmount,onUpdated} from "vue"
   import api from "@/api/index"
   import {useStore} from "vuex"
   import {computed} from "vue"
@@ -70,21 +68,35 @@
         let id = route.params.id
         let result = await api.queryNewsInfo(id);
         state.newsInfo = result;
-        // let link = document.createElement('link');
-        // link.id = "link";
-        // link.rel = "stylesheet";
-        // link.href = state.newsInfo.css[0];
-        // document.head.appendChild(link);
+        console.log(result);
+        let link = document.createElement('link');
+        link.id = "link";
+        link.rel = "stylesheet";
+        link.href = state.newsInfo.css[0];
+        document.head.appendChild(link);
 
         let {comments, popularity} = await api.queryNewsStory(id);
         state.popularity = popularity;
         state.comments = comments;
 
       });
+
+      onUpdated(()=>{
+        let imgPlaceHolder = document.querySelector(".img-place-holder");
+        if(imgPlaceHolder){
+          // let img = document.createElement('img');
+          // img.id = "img";
+          // img.src = state.newsInfo['image'];
+          if(imgPlaceHolder.innerHTML.trim() === ""){
+            imgPlaceHolder.innerHTML += `<img src="${state.newsInfo.image}" />`;
+          }
+        }
+      })
+
       onBeforeUnmount(()=> {
-        // let link = document.getElementById('link');
-        // if(!link) return;
-        // document.head.removeChild(link);
+        let link = document.getElementById('link');
+        if(!link) return;
+        document.head.removeChild(link);
       });
       onBeforeUnmount(async ()=>{
         if(store.state.isLogin === null)
@@ -94,7 +106,6 @@
           if(store.state.info === null)  store.dispatch("changeInfoAsync");
           if(store.state.storeList === null)  store.dispatch("changeStoreListAsync");
         }
-
       })
 
       return {
@@ -111,6 +122,16 @@
   .content{
     background: #fff;
     padding-bottom: 50px;
+
+    /deep/ .img-place-holder{
+      //overflow: hidden;
+      height: auto;
+      img{
+        display: block;
+        margin: 0;
+        min-height: 100%;
+      }
+    }
   }
   .van-skeleton{
     padding: 30px 15px;

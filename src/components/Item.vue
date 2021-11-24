@@ -28,7 +28,7 @@
     position: relative;
     padding: 25px 0;
     box-sizing: border-box;
-    height: 125px;
+    height: 130px;
     overflow: hidden;
 
     a{
