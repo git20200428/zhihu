@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Hash Router 和 history router 的实现</title>
+       <style>
+           .navbar {
+                   display:flex;
+                   justify-content:space-around;
+                   margin:0 auto;
+                   width:300px;
+               }
+           #container {
+                   width:400px;
+                   text-align: center;
+                   margin:0 auto;
+                   margin-top:100px;
+               }
+       </style>
+</head>
+<body>
+   <div class="navbar">
+           <div class="navbar_item"><a href="/page1" class="page1">page1</a></div>
+           <div class="navbar_item"><a href="/page2" class="page2">page2</a></div>
+           <div class="navbar_item"><a href="/page3" class="page3">page3</a></div>
+       </div>
+
+   <div id="container"></div>
+<!--   <script type="text/javascript" src="./hashRouter.js"></script>-->
+   <script>
+       // window.onhashchange = function (...para){
+       //     console.log(para)
+       // }
+       window.addEventListener('click',(e) => {
+           const path = e.target.href;
+            console.log(path)
+           e.preventDefault();
+           window.history.pushState({path:path},null,path);
+           // if(e.target.tagName === 'A' && path && this.historyObj['/' + path.split('/').slice(-1)]) {
+           //     e.preventDefault();
+           //
+           //     // 变换 URL
+           //     this.updateUrl(path);
+           //
+           //     // 获取数据
+           //     const data = this.getData(path);
+           //
+           //     // 渲染数据
+           //     this.appendData(data);
+           // }
+       })
+
+   </script>
+</body>
+</html>

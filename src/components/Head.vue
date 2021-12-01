@@ -38,8 +38,7 @@ export default {
     });
     let pic = computed(()=>{
       let {isLogin, info} = store.state;
-      if(isLogin){
-        console.log(info)
+      if(isLogin&& info){
         return info.pic || timg;
       }
       return timg;

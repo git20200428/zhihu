@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .header{
+            width: 0;
+            border-right: 15px solid transparent;
+            border-bottom: 30px solid #6b83fa;
+            border-left: 15px solid transparent;
+        }
+        .right{
+            width: 0;
+            border-left: 30px solid #c0a9e0;
+            border-bottom: 30px solid transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class='header'/>
+    <div class="right"></div>
+    <script>
+        // var x = 1;
+        // function f(x) {
+        //     console.log(x)//1
+        //     var x = 2
+        //     console.log(x)//3
+        // }
+        // f()
+        // console.log(x)//3
+        // console.log(sessionStorage.getItem("key"))
+    </script>
+    <script src="./MyPromise.js"></script>
+    <script>
+        // console.log(typeof MyPromise);
+        // console.log(typeof queueMicrotask)
+        // const test3 = new MyPromise((resolve, reject) => {
+        //     resolve(100) // 输出 状态：成功 值： 200
+        //     // reject(100) // 输出 状态：失败 值：300
+        // }).then(res => 2 * res, err => 3 * err)
+        //     .then(res => console.log(res), err => console.log(err))
+        //
+        // const test4 = new MyPromise((resolve, reject) => {
+        //     resolve(100) // 输出 状态：失败 值：200
+        //     // reject(100) // 输出 状态：成功 值：300
+        //     // 这里可没搞反哦。真的搞懂了，就知道了为啥这里是反的
+        // }).then(res => new MyPromise((resolve, reject) => reject(2 * res)), err => new MyPromise((resolve, reject) => resolve(2 * res)))
+        //     .then(res => console.log(res), err => console.log(err))
+
+        setTimeout(()=>{
+            console.log("setTimeout")
+        })
+        function test1(){
+            console.log("test1");
+        }
+
+        new Promise((resolve, reject)=>{
+            console.log("promise start")
+            queueMicrotask(()=>{
+                console.log("queueMicrotask   promise1")
+                resolve('promise1')
+            });
+            console.log("promise end")
+        }).then(res=>{
+            console.log(res);
+        })
+        queueMicrotask(test1);
+        console.log("main end")
+    </script>
+</body>
+</html>

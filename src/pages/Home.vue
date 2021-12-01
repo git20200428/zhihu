@@ -64,11 +64,8 @@ export default {
       let ob = new IntersectionObserver(async changes => {
         let item = changes[0];
         if(item.isIntersecting){
-          console.log("tttt,",state.newsList[state.newsList.length - 1]["date"])
           let result = await api.queryNewsBefore(state.newsList[state.newsList.length - 1]["date"]);
-          console.log(result);
           state.newsList.push(Object.freeze(result));
-          console.log( state.newsList);
         }
       });
       ob.observe(loadMore.value);

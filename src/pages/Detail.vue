@@ -13,7 +13,7 @@
 
 <script>
   import {useRouter,useRoute}  from "vue-router"
-  import {reactive,toRefs,onBeforeMount,onBeforeUnmount,onUpdated} from "vue"
+  import {reactive,toRefs,onBeforeMount,onBeforeUnmount,onUpdated,nextTick} from "vue"
   import api from "@/api/index"
   import {useStore} from "vuex"
   import {computed} from "vue"
@@ -57,9 +57,10 @@
         let {isLogin, storeList} = store.state;
         if(isLogin){
           if(!Array.isArray(storeList)) storeList=[];
-          return storeList.some( item => {
-            return +item.news.id === + route.params.id;
-          })
+
+          // return storeList.some( item => {
+          //   return +item.news.id === + route.params.id;
+          // })
         }
         return false;
       });
@@ -68,7 +69,6 @@
         let id = route.params.id
         let result = await api.queryNewsInfo(id);
         state.newsInfo = result;
-        console.log(result);
         let link = document.createElement('link');
         link.id = "link";
         link.rel = "stylesheet";
@@ -99,10 +99,10 @@
         document.head.removeChild(link);
       });
       onBeforeUnmount(async ()=>{
+        console.log("Detail async onBeforeUnmount")
         if(store.state.isLogin === null)
           await store.dispatch("changeIsLoginAsync");
         if(store.state.isLogin){
-          console.log(store.state.isLogin)
           if(store.state.info === null)  store.dispatch("changeInfoAsync");
           if(store.state.storeList === null)  store.dispatch("changeStoreListAsync");
         }
